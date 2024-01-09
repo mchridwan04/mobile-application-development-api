@@ -13,7 +13,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|confirmed',
         ]);
 
         if ($validator->fails()) {
@@ -28,6 +28,7 @@ class AuthController extends Controller
         $token = $user->createToken('MyApp')->accessToken;
 
         return response([
+            'success' => true,
             'message' => "Register successfully",
             'token' => $token
         ], 201);
@@ -42,7 +43,9 @@ class AuthController extends Controller
             $token = Auth::user()->createToken('MyApp')->accessToken;
 
             return response([
+                'success' => true,
                 'message' => "Login succesfully",
+                'data' => Auth::user(),
                 'token' => $token
             ], 200);
         } else {
